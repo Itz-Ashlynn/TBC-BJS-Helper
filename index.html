@@ -177,7 +177,7 @@
  //Made By @Itz_Ashlynn
         async function fetchAnswerFromAPI(question) {
             try {
-                const apiUrl = `https://v2.api-yagami.workers.dev/?question=${encodeURIComponent(question)}&state=omega`;
+                const apiUrl = `https://wormgpt.nepdevsworker.workers.dev/?question=${encodeURIComponent(question)}&state=omega`;
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 const answer = data.answer;
