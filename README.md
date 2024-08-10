@@ -32,6 +32,6 @@ Example of Bot Made via above API's
 
 Create your own Bot effortlessly with this API's! 🖼️🚀
 
-MADE BY @Itz_Ashlynn ⚡
+MADE BY [Ashlynn ⚡](https://t.me/Itz_Ashlynn)
 
 Join:[ Ashlynn_Repository ✨](https://t.me/Ashlynn_Repository)
