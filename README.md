@@ -1,1 +1,1 @@
-# WormGPT
+# Zenith Ai
