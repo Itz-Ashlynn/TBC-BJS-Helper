@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>TBC/BJS Ai Helper</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>TBC/BJS Ai Helper</title>
     <style>
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: #000000; /* AMOLED black */
+            color: #f5f5f5;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -17,7 +18,7 @@
         }
 
         #banner {
-            background-color: #007BFF;
+            background-color: #333;
             color: white;
             padding: 10px;
             text-align: center;
@@ -43,7 +44,7 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            background-color: #f5f5f5;
+            background-color: #000000; /* AMOLED black */
             margin: 20px;
         }
 
@@ -52,10 +53,10 @@
             max-width: 600px;
             max-height: 70vh;
             overflow-y: auto;
-            background-color: white;
-            border: 1px solid #ccc;
+            background-color: #121212;
+            border: 1px solid #555;
             border-radius: 8px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
             padding: 10px;
         }
 
@@ -75,14 +76,14 @@
         }
 
         .user-message .message {
-            background-color: #007BFF;
+            background-color: #1e90ff;
             color: white;
             align-self: flex-end;
         }
 
         .bot-message .message {
-            background-color: #f0f0f0;
-            color: #333;
+            background-color: #333333;
+            color: #f5f5f5;
         }
 
         .user-logo, .chatbot-logo {
@@ -96,11 +97,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #555;
             padding: 10px;
             width: 100%;
-            background-color: white;
-            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #333333;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.5);
         }
 
         #questionTypeBox {
@@ -111,7 +112,8 @@
             font-size: 16px;
             border-radius: 20px;
             margin-right: 10px;
-            background-color: #f0f0f0;
+            background-color: #444444;
+            color: #f5f5f5;
         }
 
         #sendButton {
@@ -127,7 +129,7 @@
 
         /* Dark mode styles */
         body.dark-mode {
-            background-color: #1e1e1e;
+            background-color: #000000; /* AMOLED black */
             color: #f5f5f5;
         }
 
@@ -140,26 +142,26 @@
         }
 
         body.dark-mode #chatbox {
-            background-color: #2c2c2c;
+            background-color: #121212;
             border-color: #555;
             color: #f5f5f5;
         }
 
         body.dark-mode .user-message .message {
-            background-color: #0056b3;
+            background-color: #1e90ff;
         }
 
         body.dark-mode .bot-message .message {
-            background-color: #444;
+            background-color: #333333;
         }
 
         body.dark-mode #inputContainer {
-            background-color: #333;
+            background-color: #333333;
             border-color: #555;
         }
 
         body.dark-mode #questionTypeBox {
-            background-color: #444;
+            background-color: #444444;
             color: #f5f5f5;
         }
 
@@ -232,9 +234,9 @@
 
                 const loadingMessage = chatbox.querySelector('.bot-message .message:last-child');
                 if (loadingMessage) {
-                    loadingMessage.textContent = `Bot: ${answer}`;
+                    loadingMessage.textContent = answer;
                 } else {
-                    addMessage(`Bot: ${answer}`);
+                    addMessage(answer);
                 }
             } catch (error) {
                 addMessage("Oops! An error occurred while fetching the answer.");
@@ -244,8 +246,8 @@
         async function sendMessage() {
             const userMessage = questionTypeBox.value.trim();
             if (userMessage !== '') {
-                addMessage(`You: ${userMessage}`, true);
-                addMessage("Bot: Answer is loading...");
+                addMessage(userMessage, true);
+                addMessage("Answer is loading...");
 
                 await fetchAnswerFromAPI(userMessage);
                 questionTypeBox.value = '';
