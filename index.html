@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Zenith Ai</title>
+    <title>TBC/BJS Ai Helper</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <style>
         body {
@@ -9,17 +9,32 @@
             padding: 0;
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
+            color: #333;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         #banner {
             background-color: #007BFF;
             color: white;
-            padding: 5px;
+            padding: 10px;
             text-align: center;
             font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #themeToggle {
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: transparent;
+            color: white;
         }
 
         #chat-container {
@@ -35,23 +50,68 @@
         #chatbox {
             width: 100%;
             max-width: 600px;
-            max-height: 400px;
+            max-height: 70vh;
             overflow-y: auto;
             background-color: white;
             border: 1px solid #ccc;
             border-radius: 8px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
+            padding: 10px;
         }
 
-        .user-message {
-            text-align: right;
-            color: #3d3d3d;
+        .user-message, .bot-message {
             display: flex;
             align-items: center;
-            margin: 10px;
+            margin: 10px 0;
+            word-wrap: break-word;
+        }
+
+        .user-message .message, .bot-message .message {
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+            word-wrap: break-word;
+            white-space: pre-line;
+        }
+
+        .user-message .message {
+            background-color: #007BFF;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .bot-message .message {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .user-logo, .chatbot-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 0 10px;
+        }
+
+        #inputContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #ccc;
+            padding: 10px;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        #questionTypeBox {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            border-radius: 20px;
+            margin-right: 10px;
+            background-color: #f0f0f0;
         }
 
         #sendButton {
@@ -65,84 +125,58 @@
             font-size: 18px;
         }
 
-        .user-logo {
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1e1e1e;
+            color: #f5f5f5;
         }
 
-        .bot-message {
-            text-align: left;
-            color: #3d3d3d;
-            display: flex;
-            align-items: flex-end;
-            margin: 10px;
+        body.dark-mode #banner {
+            background-color: #333;
         }
 
-        .message {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            word-wrap: break-word;
-            white-space: pre-line;
+        body.dark-mode #themeToggle {
+            border-color: #f5f5f5;
         }
 
-        .message.bot-message {
-            background-color: #f0f0f0;
+        body.dark-mode #chatbox {
+            background-color: #2c2c2c;
+            border-color: #555;
+            color: #f5f5f5;
         }
 
-        .bot-reply {
-            display: flex;
-            align-items: center;
+        body.dark-mode .user-message .message {
+            background-color: #0056b3;
         }
 
-        .chatbot-logo {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
+        body.dark-mode .bot-message .message {
+            background-color: #444;
         }
 
-        #userLogo {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
+        body.dark-mode #inputContainer {
+            background-color: #333;
+            border-color: #555;
         }
 
-        #questionTypeBox {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            border-radius: 20px;
+        body.dark-mode #questionTypeBox {
+            background-color: #444;
+            color: #f5f5f5;
         }
 
-        .user-logo {
-            width: 30px;
-            height: 30px;
-            margin-left: 10px;
+        body.dark-mode #sendButton {
+            background-color: #4CAF50;
         }
 
-        #inputContainer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #ccc;
-            padding: 10px;
-            width: 100%;
-            background-color: white;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
     <div id="banner">
-        <h1>Zenith Ai WEB</h1>
+        <h1>TBC/BJS Ai Helper</h1>
+        <button id="themeToggle">🌙 Dark Mode</button>
     </div>
     <div id="chat-container">
         <div id="chatbox"></div>
         <div id="inputContainer">
-            <img id="userLogo" src="http://telegra.ph/file/be3864b1ac58b1231b6d2.jpg" alt="User Logo">
             <input type="text" id="questionTypeBox" placeholder="Type your question...">
             <button id="sendButton">Send</button>
         </div>
@@ -152,7 +186,9 @@
         const chatbox = document.getElementById('chatbox');
         const questionTypeBox = document.getElementById('questionTypeBox');
         const sendButton = document.getElementById('sendButton');
-//Made By @Itz_Ashlynn
+        const themeToggle = document.getElementById('themeToggle');
+        let isDarkMode = false;
+
         sendButton.addEventListener('click', sendMessage);
         questionTypeBox.addEventListener('keydown', event => {
             if (event.key === 'Enter') {
@@ -160,69 +196,61 @@
                 sendMessage();
             }
         });
- //Made By @Itz_Ashlynn
+
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            themeToggle.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+
         function addMessage(message, isUser = false) {
             const messageElement = document.createElement('div');
-            messageElement.className = isUser ? 'user-message message' : 'bot-message message';
+            messageElement.className = isUser ? 'user-message' : 'bot-message';
+
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message';
+            messageContent.textContent = message;
+
             if (isUser) {
                 const userLogo = document.createElement('img');
                 userLogo.className = 'user-logo';
                 userLogo.src = 'http://telegra.ph/file/be3864b1ac58b1231b6d2.jpg';
                 messageElement.appendChild(userLogo);
             }
-            messageElement.textContent = message;
+
+            messageElement.appendChild(messageContent);
             chatbox.appendChild(messageElement);
             chatbox.scrollTop = chatbox.scrollHeight;
         }
- //Made By @Itz_Ashlynn
+
         async function fetchAnswerFromAPI(question) {
             try {
-                const apiUrl = `https://ashlynn.darkhacker7301.workers.dev/?question=${encodeURIComponent(question)}&state=Zenith`;
+                const apiUrl = `https://helper.darkhacker7301.workers.dev/?question=${encodeURIComponent(question)}&state=helper`;
                 const response = await fetch(apiUrl);
                 const data = await response.json();
                 const answer = data.answer;
 
- //Made By @Itz_Ashlynn
-                const loadingMessage = chatbox.querySelector('.bot-message.message:last-child');
+                const loadingMessage = chatbox.querySelector('.bot-message .message:last-child');
                 if (loadingMessage) {
                     loadingMessage.textContent = `Bot: ${answer}`;
                 } else {
-                    const botMessage = document.createElement('div');
-                    botMessage.className = 'bot-message message';
-                    botMessage.textContent = `Bot: ${answer}`;
-                    chatbox.appendChild(botMessage);
+                    addMessage(`Bot: ${answer}`);
                 }
-//Made By @Itz_Ashlynn
-                chatbox.scrollTop = chatbox.scrollHeight;
             } catch (error) {
                 addMessage("Oops! An error occurred while fetching the answer.");
             }
         }
- //Made By @Itz_Ashlynn
+
         async function sendMessage() {
-            const userMessage = questionTypeBox.value;
-            if (userMessage.trim() !== '') {
+            const userMessage = questionTypeBox.value.trim();
+            if (userMessage !== '') {
                 addMessage(`You: ${userMessage}`, true);
+                addMessage("Bot: Answer is loading...");
 
-         //Made By @Itz_Ashlynn
-                const loadingMessage = document.createElement('div');
-                loadingMessage.className = 'bot-message message';
-                loadingMessage.textContent = "Bot: Answer is loading...";
-                chatbox.appendChild(loadingMessage);
-//Made By @Itz_Ashlynn
-                await fetchAnswerFromAPI(userMessage); // Wait for the answer
+                await fetchAnswerFromAPI(userMessage);
+                questionTypeBox.value = '';
             }
-            questionTypeBox.value = '';
         }
-
-
-
-
-
-
-
-
     </script>
-
 </body>
 </html>
