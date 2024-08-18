@@ -37,6 +37,7 @@
             border-radius: 5px;
             background-color: transparent;
             color: #333333;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         #chat-container {
@@ -85,6 +86,20 @@
             background-color: #f0f0f0; /* Light mode bot message color */
             color: #333333;
             align-self: flex-start;
+        }
+
+        .code-block {
+            background-color: #e8e8e8;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+
+        .code-block.dark-mode {
+            background-color: #2d2d2d;
+            color: #f5f5f5;
         }
 
         .user-logo, .chatbot-logo {
@@ -205,16 +220,25 @@
             themeToggle.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
         });
 
-        function addMessage(message, isUser = false) {
+        function addMessage(message, isUser = false, isCode = false) {
             const messageContainer = document.createElement('div');
             messageContainer.className = 'message-container';
 
             const messageElement = document.createElement('div');
             messageElement.className = isUser ? 'user-message' : 'bot-message';
 
-            const messageContent = document.createElement('div');
-            messageContent.className = 'message';
-            messageContent.textContent = message;
+            if (isCode) {
+                const codeElement = document.createElement('pre');
+                codeElement.className = 'code-block';
+                codeElement.textContent = message;
+                if (isDarkMode) codeElement.classList.add('dark-mode');
+                messageElement.appendChild(codeElement);
+            } else {
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message';
+                messageContent.textContent = message;
+                messageElement.appendChild(messageContent);
+            }
 
             if (isUser) {
                 const userLogo = document.createElement('img');
@@ -223,7 +247,6 @@
                 messageElement.appendChild(userLogo);
             }
 
-            messageElement.appendChild(messageContent);
             messageContainer.appendChild(messageElement);
             chatContainer.appendChild(messageContainer);
             chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -242,6 +265,13 @@
                 } else {
                     addMessage(answer);
                 }
+
+                // Assuming the API sends code in response, detect and format code blocks
+                if (answer.startsWith('```') && answer.endsWith('```')) {
+                    const codeContent = answer.substring(3, answer.length - 3).trim();
+                    addMessage(codeContent, false, true);
+                }
+
             } catch (error) {
                 addMessage("Oops! An error occurred while fetching the answer.");
             }
