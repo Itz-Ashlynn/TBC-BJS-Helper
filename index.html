@@ -14,6 +14,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         #banner {
@@ -41,28 +42,20 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: flex-start;
             align-items: center;
-            background-color: #000000; /* AMOLED black */
-            margin: 20px;
-        }
-
-        #chatbox {
             width: 100%;
-            max-width: 600px;
-            max-height: 70vh;
+            padding: 20px;
             overflow-y: auto;
-            background-color: #121212;
-            border: 1px solid #555;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+            background-color: #000000; /* AMOLED black */
         }
 
         .message-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
-            margin-bottom: 10px;
         }
 
         .user-message, .bot-message {
@@ -102,7 +95,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid #555;
             padding: 10px;
             width: 100%;
             background-color: #333333;
@@ -146,10 +138,8 @@
             border-color: #f5f5f5;
         }
 
-        body.dark-mode #chatbox {
-            background-color: #121212;
-            border-color: #555;
-            color: #f5f5f5;
+        body.dark-mode #chat-container {
+            background-color: #000000; /* AMOLED black */
         }
 
         body.dark-mode .user-message .message {
@@ -180,16 +170,14 @@
         <h1>TBC/BJS Ai Helper</h1>
         <button id="themeToggle">🌙 Dark Mode</button>
     </div>
-    <div id="chat-container">
-        <div id="chatbox"></div>
-        <div id="inputContainer">
-            <input type="text" id="questionTypeBox" placeholder="Type your question...">
-            <button id="sendButton">Send</button>
-        </div>
+    <div id="chat-container"></div>
+    <div id="inputContainer">
+        <input type="text" id="questionTypeBox" placeholder="Type your question...">
+        <button id="sendButton">Send</button>
     </div>
 
     <script>
-        const chatbox = document.getElementById('chatbox');
+        const chatContainer = document.getElementById('chat-container');
         const questionTypeBox = document.getElementById('questionTypeBox');
         const sendButton = document.getElementById('sendButton');
         const themeToggle = document.getElementById('themeToggle');
@@ -229,8 +217,8 @@
 
             messageElement.appendChild(messageContent);
             messageContainer.appendChild(messageElement);
-            chatbox.appendChild(messageContainer);
-            chatbox.scrollTop = chatbox.scrollHeight;
+            chatContainer.appendChild(messageContainer);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         async function fetchAnswerFromAPI(question) {
@@ -240,7 +228,7 @@
                 const data = await response.json();
                 const answer = data.answer;
 
-                const loadingMessage = chatbox.querySelector('.message-container:last-child .bot-message .message');
+                const loadingMessage = chatContainer.querySelector('.message-container:last-child .bot-message .message');
                 if (loadingMessage) {
                     loadingMessage.textContent = answer;
                 } else {
@@ -264,4 +252,3 @@
     </script>
 </body>
 </html>
-
