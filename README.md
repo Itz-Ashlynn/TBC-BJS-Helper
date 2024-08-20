@@ -17,7 +17,7 @@ You can change the AI's behavior by appending state= with the desired mode to th
 
 ChatGPT Mode:
 [ChatGPT](https://chatgpt.darkhacker7301.workers.dev/?question=your%20question%20here)
-[ChatGPT](https://ashlynn.serv00.net/gpt4.php/?question= here your question )
+[ChatGPT](https://ashlynn.serv00.net/gpt4.php/?question=your%20question%20here)
 
 Girlfriend Mode:
 [ChatGPT Girlfriend](https://chatgpt.darkhacker7301.workers.dev/?question=your%20question%20here&state=girlfriend)
