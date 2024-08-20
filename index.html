@@ -13,25 +13,38 @@
             flex-direction: column;
             min-height: 100vh;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #ffffff; /* Default to light mode */
-            color: #333333; /* Default text color */
+            background-color: #ffffff;
+            color: #333333;
+            overflow: hidden;
         }
 
         #banner {
-            background-color: #f0f0f0; /* Light mode banner color */
+            background-color: #f0f0f0;
             color: #333333;
-            padding: 10px;
+            padding: 5px 10px; /* Reduced padding for smaller header */
             text-align: center;
-            font-size: 20px;
+            font-size: 18px; /* Reduced font size */
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
             transition: background-color 0.3s, color 0.3s;
+        }
+
+        #watermark {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #888;
+            font-style: italic;
+            opacity: 0.7;
         }
 
         #themeToggle {
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             padding: 5px 10px;
             border: 1px solid #333333;
             border-radius: 5px;
@@ -49,8 +62,8 @@
             width: 100%;
             padding: 20px;
             overflow-y: auto;
+            background-color: #ffffff;
             transition: background-color 0.3s, color 0.3s;
-            background-color: #ffffff; /* Light mode background color */
         }
 
         .message-container {
@@ -58,7 +71,8 @@
             max-width: 800px;
             margin-bottom: 10px;
             display: flex;
-            flex-direction: column;
+            align-items: flex-end;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
         .user-message, .bot-message {
@@ -76,16 +90,20 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
+        .user-message {
+            flex-direction: row-reverse;
+        }
+
         .user-message .message {
-            background-color: #007bff; /* Light mode user message color */
+            background-color: #007bff;
             color: white;
-            align-self: flex-end;
+            margin-left: 10px;
         }
 
         .bot-message .message {
-            background-color: #f0f0f0; /* Light mode bot message color */
+            background-color: #f0f0f0;
             color: #333333;
-            align-self: flex-start;
+            margin-right: 10px;
         }
 
         .code-block {
@@ -103,10 +121,9 @@
         }
 
         .user-logo, .chatbot-logo {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            margin: 0 10px;
         }
 
         #inputContainer {
@@ -117,6 +134,8 @@
             width: 100%;
             background-color: #f0f0f0;
             box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            bottom: 0;
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -128,7 +147,7 @@
             font-size: 16px;
             border-radius: 20px;
             margin-right: 10px;
-            background-color: #ffffff; /* Light mode input box */
+            background-color: #ffffff;
             color: #333333;
         }
 
@@ -143,9 +162,14 @@
             font-size: 18px;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Dark mode styles */
         body.dark-mode {
-            background-color: #000000; /* AMOLED black */
+            background-color: #000000;
             color: #f5f5f5;
         }
 
@@ -160,16 +184,16 @@
         }
 
         body.dark-mode #chat-container {
-            background-color: #000000; /* AMOLED black */
+            background-color: #000000;
             color: #f5f5f5;
         }
 
         body.dark-mode .user-message .message {
-            background-color: #1e90ff; /* Dark mode user message color */
+            background-color: #1e90ff;
         }
 
         body.dark-mode .bot-message .message {
-            background-color: #BCC6CC; /* Dark mode bot message color */
+            background-color: #BCC6CC;
         }
 
         body.dark-mode #inputContainer {
@@ -186,11 +210,33 @@
             background-color: #4CAF50;
             color: #f5f5f5;
         }
+
+        @media screen and (max-width: 768px) {
+            #chat-container {
+                padding: 10px;
+            }
+
+            .message-container {
+                max-width: 100%;
+            }
+
+            .user-logo, .chatbot-logo {
+                width: 30px;
+                height: 30px;
+            }
+
+            #sendButton {
+                width: 60px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <div id="banner">
         <h1>TBC/BJS Ai Helper</h1>
+        <span id="watermark">Made by ASHLYNN</span>
         <button id="themeToggle">🌙 Dark Mode</button>
     </div>
     <div id="chat-container"></div>
@@ -240,12 +286,12 @@
                 messageElement.appendChild(messageContent);
             }
 
-            if (isUser) {
-                const userLogo = document.createElement('img');
-                userLogo.className = 'user-logo';
-                userLogo.src = 'http://telegra.ph/file/be3864b1ac58b1231b6d2.jpg';
-                messageElement.appendChild(userLogo);
-            }
+            const logo = document.createElement('img');
+            logo.className = isUser ? 'user-logo' : 'chatbot-logo';
+            logo.src = isUser 
+                ? 'http://telegra.ph/file/be3864b1ac58b1231b6d2.jpg' 
+                : 'https://i.ibb.co/Yyf6WWQ/cropped-image.png';
+            messageElement.appendChild(logo);
 
             messageContainer.appendChild(messageElement);
             chatContainer.appendChild(messageContainer);
@@ -266,7 +312,6 @@
                     addMessage(answer);
                 }
 
-                // Assuming the API sends code in response, detect and format code blocks
                 if (answer.startsWith('```') && answer.endsWith('```')) {
                     const codeContent = answer.substring(3, answer.length - 3).trim();
                     addMessage(codeContent, false, true);
