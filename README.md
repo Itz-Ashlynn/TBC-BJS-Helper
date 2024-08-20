@@ -35,8 +35,11 @@ Example Bots
 Here are a few bots created using the APIs:
 
 [Fast_ChatGPT4Bot](https://t.me/Fast_ChatGPT4Bot)
+
 [ChatGPT_4o_XBot](https://t.me/ChatGPT_4o_XBot)
+
 [ShizukaXBot](https://t.me/ShizukaXBot)
+
 You can create your own bot effortlessly with these APIs! 🚀🖼️
 
 Developed by
